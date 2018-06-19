@@ -17,15 +17,18 @@ class Solution:
             mid = lo + (hi - lo)//2
             if nums[mid] == target:
                 return mid
-            if nums[mid] < target and target > nums[lo]:
-                lo = mid + 1
-            elif nums[mid] > target and target < nums[lo]:
-                lo = mid + 1
-            elif nums[mid] > target and target >= nums[lo]:
-                hi = mid - 1
-            else:
-                hi = mid - 1
+            if nums[mid] >= nums[lo]:
+                if nums[mid] > target and target >= nums[lo]:
+                    hi = mid - 1
+                else:
+                    lo = mid + 1
+            elif nums[mid] <= nums[hi]:
+                if nums[mid] < target and target <= nums[hi]:
+                    lo = mid + 1
+                else:
+                    hi = mid - 1
         return -1
+
 
 arr = [4,5,6,7,0,1,2]
 arr_empty = []
@@ -45,3 +48,7 @@ print('Expect 2: {}'.format(sol.search(arr_even_len, 2)))
 print('Expect 3: {}'.format(sol.search(arr_even_len, 3)))
 arr_three = [5, 1, 3]
 print('Expect 0: {}'.format(sol.search(arr_three, 5)))
+print('Expect 2: {}'.format(sol.search(arr_three, 3)))
+
+
+print('Expect -1: {}'.format(sol.search([4,5,6,7,0,1,2], 3)))
