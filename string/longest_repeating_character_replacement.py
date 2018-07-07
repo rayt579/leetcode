@@ -4,6 +4,9 @@ https://leetcode.com/problems/longest-repeating-character-replacement/descriptio
 
 class Solution(object):
     def characterReplacement(self, s, k):
+        return self.character_replacement_sliding(s, k)
+
+    def character_replacement_math(self, s, k):
         count = [0] * 26
         max_count = 0
         start = 0
@@ -14,6 +17,18 @@ class Solution(object):
                 count[ord(s[start]) - ord('A')] -= 1
                 start += 1
         return len(s) - start
+
+    def character_replacement_sliding(self, s, k):
+        start, max_count, max_length = 0, 0, 0
+        counts = [0] * 26
+        for end in range(len(s)):
+            counts[ord(s[end]) - ord('A')] += 1
+            max_count = max(max_count, counts[ord(s[end]) - ord('A')])
+            if end - start + 1 - max_count > k:
+                counts[ord(s[start]) - ord('A')] -= 1
+                start += 1
+            max_length = max(max_length, end - start + 1)
+        return max_length
 
     def characterReplacement_inefficient(self, s, k):
         """
@@ -43,5 +58,3 @@ sol = Solution()
 print(sol.characterReplacement("ABAB", 2))
 print(sol.characterReplacement("AABABBA", 1))
 print(sol.characterReplacement("AAAA", 2))
-
-

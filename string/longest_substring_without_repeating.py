@@ -1,27 +1,26 @@
 '''
 https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
 '''
-
-from collections import OrderedDict
-
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
         """
         :type s: str
         :rtype: int
         """
-        longest_substring_chars = OrderedDict()
         max_length = 0
-        for char in s:
-            if char in longest_substring_chars:
-                for stale_key in list(longest_substring_chars):
-                    del longest_substring_chars[stale_key]
-                    if stale_key == char:
-                        break
-            longest_substring_chars[char] = 0
-            max_length = max(len(longest_substring_chars), max_length)
+        start, end = 0, 0
+        nonrepeats = set()
+        while start <= end and end < len(s):
+            if s[end] not in nonrepeats:
+                nonrepeats.add(s[end])
+                end += 1
+                max_length = max(max_length, end - start)
+            else:
+                nonrepeats.remove(s[start])
+                start += 1
 
         return max_length
+
 
 sol = Solution()
 a = 'abcabcbb'
