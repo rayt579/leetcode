@@ -19,7 +19,7 @@ class Solution:
             max_score = max(max_score, score[i])
 
         return max_score
-
+        
 sol = Solution()
 a = [-2,1,-3,4,-1,2,1,-5,4]
 b = [1,2]

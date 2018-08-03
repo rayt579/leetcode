@@ -1,7 +1,6 @@
 '''
 https://leetcode.com/problems/search-in-rotated-sorted-array/description/
 '''
-
 class Solution:
     def search(self, nums, target):
         """
@@ -9,6 +8,9 @@ class Solution:
         :type target: int
         :rtype: int
         """
+        return self.search_in_rotated_sorted_array(nums, target)
+
+    def search_original(self, nums, target):
         if not nums or len(nums) == 0:
             return -1
 
@@ -29,6 +31,33 @@ class Solution:
                     hi = mid - 1
         return -1
 
+    def search_in_rotated_sorted_array(self, nums, target):
+        if not nums:
+            return -1
+
+        rot = self.find_rotation_point(nums)
+        lo, hi = 0, len(nums) - 1
+        while lo <= hi:
+            mid = lo + (hi-lo)//2
+            rotmid = (mid + rot) % len(nums)
+            if nums[rotmid] < target:
+                lo = mid + 1
+            elif nums[rotmid] > target:
+                hi = mid - 1
+            else:
+                return rotmid
+        return -1
+
+
+    def find_rotation_point(self, nums):
+        lo, hi = 0, len(nums) - 1
+        while lo < hi:
+            mid = lo + (hi - lo)//2
+            if nums[mid] > nums[hi]:
+                lo = mid + 1
+            else:
+                hi = mid
+        return lo
 
 arr = [4,5,6,7,0,1,2]
 arr_empty = []

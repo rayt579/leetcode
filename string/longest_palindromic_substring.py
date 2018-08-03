@@ -16,7 +16,6 @@ class Solution:
             if length > self.max_length:
                 self.max_length = length
                 self.start = i + 1
-                print(self.start)
 
         if len(s) < 2:
             return s
