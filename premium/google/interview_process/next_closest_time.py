@@ -8,42 +8,32 @@ class Solution:
         :type time: str
         :rtype: str
         """ 
-        numbers = sorted(time[0:2] + time[3:])
-        time = list(time)
-        for i in range(len(numbers)):
-            if numbers[i] > time[4]:
-                time[4] = numbers[i]
-                return ''.join(time)
+        digits = list(time)
+        digits.remove(':') 
+        digits = list(map(int, digits))
 
-        for i in range(len(numbers)):
-            if numbers[i] > time[3] and '0' <= numbers[i] <= '5':
-                time[3] = numbers[i]
-                time[4] = numbers[i]
-                return ''.join(time)
-
-        if time[0] == 2:
-            for i in range(len(numbers)):
-                if numbers[i] > time[1] and '0' <= numbers[i] <= '3':
-                    time[1] = numbers[i]
-                    time[3] = numbers[i]
-                    time[4] = numbers[i]
-                    return ''.join(time)
-        else:
-            for i in range(len(numbers)):
-                if numbers[i] > time[1] and '0' <= numbers[i] <= '9':
-                    time[1] = numbers[i]
-                    time[3] = numbers[i]
-                    time[4] = numbers[i]
-                    return ''.join(time)
+        original_digits = [False] * 10
+        for digit in digits:
+            original_digits[int(digit)] = True
         
-        time[1] = numbers[0]
-        time[3] = numbers[0]
-        time[4] = numbers[0]
-        return ''.join(time)
+        while True:
+            digits[3] = (digits[3] + 1) % 10
+            if digits[3] == 0:
+                digits[2] = (digits[2] + 1) % 6
+                if digits[2] == 0:
+                    digits[1] = (digits[1] + 1) % 4 if digits[0] == 2 else (digits[1] + 1) % 10
+                    if digits[1] == 0:
+                        digits[0] = (digits[0] + 1) % 3
+            
+            for i in range(len(digits)):
+                if not original_digits[digits[i]]:
+                    break
+                if i == len(digits) - 1:
+                    digits = list(map(str, digits))
+                    digits.insert(2,':')
+                    return ''.join(digits)
 
+           
 sol = Solution()
-print('Expect 11:11: {}'.format(sol.nextClosestTime('19:49')))
-print('Expect 19:29: {}'.format(sol.nextClosestTime('19:24')))
-print('Expect 04:44: {}'.format(sol.nextClosestTime('04:29')))
-print('Expect 15:55 {}'.format(sol.nextClosestTime('12:59')))
+#print('Expect 19:29: {}'.format(sol.nextClosestTime('19:24')))
 print('Expect 22:22 {}'.format(sol.nextClosestTime('23:59')))
