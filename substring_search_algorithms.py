@@ -19,7 +19,7 @@ class KMP:
         
         dfa[ord(pattern[0])][0] = 1
         for j in range(1, M):
-            for c in range(256):
+            for c in range(R):
                 dfa[c][j] = dfa[c][prev_state]
             dfa[ord(pattern[j])][j] = j + 1
             prev_state = dfa[ord(pattern[j])][prev_state]

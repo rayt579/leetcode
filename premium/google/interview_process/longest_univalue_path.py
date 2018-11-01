@@ -1,53 +1,64 @@
 '''
 https://leetcode.com/explore/interview/card/google/67/sql-2/473/
 '''
-# Definition for a binary tree node.
+# Definition for a binary tree root.
 class TreeNode:
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
 
-from collections import deque
 class Solution:
+    def __init__(self):
+        self.max_path_length = 0
+
     def longestUnivaluePath(self, root):
         """
         :type root: TreeNode
         :rtype: int
         """
-        if not root: return 0
-        queue = deque([root])
-        longest_path = float('-inf')
-        visited = set()
+        def longest_path_at(node, val):
+            if not node: return 0
+            left = 0 if not node.left else longest_path_at(node.left, node.val)
+            right = 0 if not node.right else longest_path_at(node.right, node.val)
+            
+            self.max_path_length = max(self.max_path_length, left + right)
+            if node.val == val: 
+                return max(left, right) + 1
+            return 0
+        
+        longest_path_at(root, None)
+        return self.max_path_length
+        
 
-        while len(queue) > 0:
-            node = queue.popleft()
-            if node not in visited:
-                longest_path = max(longest_path, self.longest_path_at_node(node, 0, visited))
 
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
-        return longest_path
 
-    def longest_path_at_node(self, node, count, nodes_visited):
-        if not node:
-            return count
-
-        nodes_visited.add(node)
-        if node.left and node.left.val == node.val:
-            count += self.longest_path_at_node(node.left, count + 1, nodes_visited)
-        if node.right and node.right.val == node.val:
-            count += self.longest_path_at_node(node.right, count + 1, nodes_visited)
-        return count
+        
 
 sol = Solution()
-tree = TreeNode(5)
+root = TreeNode(5)
+root.left = TreeNode(4)
+root.right = TreeNode(5)
+root.left.left = TreeNode(1)
+root.left.right = TreeNode(1)
+root.right.right = TreeNode(5)
+
+tree = TreeNode(1)
 tree.left = TreeNode(4)
-tree.left.left = TreeNode(1)
-tree.left.right = TreeNode(1)
+tree.left.left = TreeNode(4)
+tree.left.right = TreeNode(4)
 tree.right = TreeNode(5)
 tree.right.right = TreeNode(5)
 
+complete = TreeNode(4)
+complete.left = TreeNode(4)
+complete.left.left = TreeNode(4)
+complete.left.right = TreeNode(4)
+complete.right = TreeNode(4)
+complete.right.left = TreeNode(4)
+complete.right.right = TreeNode(4)
+
+
+print('Expecting 2: {}'.format(sol.longestUnivaluePath(root)))
 print('Expecting 2: {}'.format(sol.longestUnivaluePath(tree)))
+print('Expecting 4: {}'.format(sol.longestUnivaluePath(complete)))
