@@ -1,7 +1,6 @@
 /**
  * Definition for a binary tree node.
  */
- 
 function TreeNode(val) {
   this.val = val;
   this.left = this.right = null;
@@ -12,21 +11,26 @@ function TreeNode(val) {
  * @return {number}
  */
 var longestUnivaluePath = function(root) {
-  return 0 ;
+  const helper = function longestPathAtNodeEqualToValue(node, val) {
+    if (!node) { return 0; }
+    
+    var leftMaxPath = (node.left === null) ? 0 : helper(node.left, node.val);
+    var rightMaxPath = (node.right === null) ? 0 : helper(node.right, node.val);
+    res = Math.max(res, leftMaxPath + rightMaxPath);
+    return (node.val === val) ? Math.max(leftMaxPath, rightMaxPath) + 1 : 0
+  }
+
+  let res = 0;
+  helper(root, null);
+  return res;
 };
 
-const max_path = (node, val) => {
-  if (node.left == null && node.right == null)
-    return 1
-}
-
-
-a = new TreeNode(1);
+const a = new TreeNode(5);
 a.left = new TreeNode(4);
-a.left.left = new TreeNode(4);
-a.left.right = new TreeNode(4);
+a.left.left = new TreeNode(1);
+a.left.right = new TreeNode(1);
 a.right = new TreeNode(5);
-a.right.right = new TreeNode(5);
+a.right.left = new TreeNode(5);
 
-res = longestUnivaluePath(a);
-console.log(`Expected 3: ${res}`);
+const res = longestUnivaluePath(a);
+console.log(`Expected 2: ${res}`);
