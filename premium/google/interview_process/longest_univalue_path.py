@@ -29,11 +29,6 @@ class Solution:
         
         longest_path_at(root, None)
         return self.max_path_length
-        
-
-
-
-        
 
 sol = Solution()
 root = TreeNode(5)
