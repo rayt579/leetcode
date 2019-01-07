@@ -1,5 +1,12 @@
 '''
-https://leetcode.com/problems/number-of-islands/submissions/1
+https://leetcode.com/problems/number-of-islands/
+
+Takeaways: 
+1) Flood fill solution
+2) Distinguish between using recursive vs. iterative approach.
+
+Time Complexity of Solution:
+1) O(n) time, O(1) space (destroys input)
 '''
 
 

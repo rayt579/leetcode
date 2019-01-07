@@ -1,5 +1,10 @@
 '''
 https://leetcode.com/problems/clone-graph/description/
+
+Takeaways:
+1) You know you want to perform graph traversal. See if you can think through choosing between DFS vs. BFS.
+
+Time Complexity of Solution:
 '''
 
 # Definition for a undirected graph node
@@ -16,7 +21,9 @@ class Solution:
 
     def cloneGraph(self, node):
         return self._clone_graph(node, {})
-
+    def _iterative_DFS(self):
+        pass
+    # This is recursive DFS
     def _clone_graph(self, original_node, cloned_nodes):
         if original_node is None:
             return None
@@ -35,21 +42,22 @@ class Solution:
 
         return clone_node
 
+    #This is a BFS solution
     def clone_graph_iterative(self, node):
         if node is None:
             return None
 
         clones = {}
         clones[node] = UndirectedGraphNode(node.label)
-        nodes_to_visit = collections.deque([node])
+        explore = collections.deque([node])
 
-        while nodes_to_visit:
-            original = nodes_to_visit.popleft()
+        while explore:
+            original = explore.popleft()
 
             for neighbor in original.neighbors:
                 if neighbor not in clones:
                     clones[neighbor] = UndirectedGraphNode(neighbor.label)
-                    nodes_to_visit.append(neighbor)
+                    explore.append(neighbor)
                 clones[original].neighbors.append(clones[neighbor])
 
         return clones[node]

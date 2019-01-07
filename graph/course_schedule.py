@@ -1,5 +1,5 @@
 '''
-https://leetcode.com/problems/course-schedule/description/'
+https://leetcode.com/problems/course-schedule/description/
 '''
 import collections
 class Solution(object):
