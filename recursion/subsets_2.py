@@ -23,4 +23,4 @@ class Solution(object):
             path.pop()
 
 sol = Solution()
-print(sol.subsetsWithDupe([1,2, 2, 2, 2]))
+print(sol.subsetsWithDupe([1, 2, 2, 2, 2]))
