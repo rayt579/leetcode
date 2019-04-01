@@ -7,27 +7,20 @@ class Solution:
 
     # O(m + n) time, O(1) space
     def merge_optimize_space(self, nums1, m, nums2, n):
-        i, j, k = 0, 0, 0
-
-        while i < m and j < n:
-            if nums1[i] < nums2[j]:
+        i, j, k = m - 1, n - 1, m + n - 1
+        while i >= 0 and j >= 0:
+            if nums1[i] > nums2[j]:
                 nums1[k] = nums1[i]
-                i += 1
+                i -= 1
             else:
                 nums1[k] = nums2[j]
-                j += 1
-            k += 1
+                j -= 1
+            k -= 1
 
-        if i == m:
-            while j < n:
-                nums1[k] = nums2[j]
-                j += 1
-                k += 1
-        elif j == n:
-            while i < m:
-                nums1[k] = nums1[i]
-                i += 1
-                k += 1
+        while j >= 0:
+            nums1[k] = nums2[j]
+            k -= 1
+            j -= 1
 
     '''
     Time: O(m + n) time, two pass solution
@@ -61,5 +54,7 @@ class Solution:
 sol = Solution()
 nums1 = [1,2,3,0,0,0]
 nums2 = [2, 5, 6]
+print('Before: {}'.format(nums1))
+print('Before: {}'.format(nums2))
 sol.merge(nums1, 3, nums2, 3)
-print(nums1)
+print('After: {}'.format(nums1))

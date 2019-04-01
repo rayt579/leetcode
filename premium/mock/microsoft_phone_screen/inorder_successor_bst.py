@@ -7,6 +7,18 @@ class TreeNode:
 
 class Solution:
     def inorderSuccessor(self, root, p):
+        return self.inorder_successor_recursive(root, p)
+
+    def inorder_successor_recursive(self, root, p):
+        if not root:
+            return None
+        if p.val < root.val:
+            left = self.inorder_successor_recursive(root.left, p)
+            return left if left else root
+        else:
+            return self.inorder_successor_recursive(root.right, p)
+
+    def inorder_successor_iterative(self, root, p):
         parent, curr = None, root
         while curr:
             if p == curr:

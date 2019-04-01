@@ -5,6 +5,7 @@ Takeaways:
 1) You know you want to perform graph traversal. See if you can think through choosing between DFS vs. BFS.
 
 Time Complexity of Solution:
+    O(V + E) for BFS, time and space
 '''
 
 # Definition for a undirected graph node
@@ -21,8 +22,6 @@ class Solution:
 
     def cloneGraph(self, node):
         return self._clone_graph(node, {})
-    def _iterative_DFS(self):
-        pass
     # This is recursive DFS
     def _clone_graph(self, original_node, cloned_nodes):
         if original_node is None:
