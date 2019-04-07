@@ -1,64 +1,45 @@
-'''
-https://leetcode.com/problems/longest-consecutive-sequence/description/
-'''
-
 class Solution:
     def longestConsecutive(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        """
-        if not nums or len(nums) == 1:
-            return len(nums)
-
-        lcs_length = 0
-        explore = set(nums)
-        for num in nums:
-            if num - 1 not in explore:
-                next_num = num + 1
-                while next_num in explore:
-                    next_num += 1
-                lcs_length = max(lcs_length, next_num - num)
-
-        return lcs_length
-
-    def longest_consecutive_sequeunce_dp(self, nums):
-        lcs = {}
+        return self.longest_consecutive_linear(nums)
+    
+    def longest_consecutive_linear(self, nums):
         max_length = 0
+        nums_set = set(nums)
+
         for num in nums:
-            if num in lcs:
-                continue
-
-            left_val = lcs[num-1] if num - 1 in lcs else 0
-            right_val = lcs[num+1] if num + 1 in lcs else 0
-
-            lcs[num] = left_val + right_val + 1
-            max_length = max(max_length, lcs[num])
-
-            lcs[num - left_val] = lcs[num]
-            lcs[num + right_val] = lcs[num]
+            if num - 1 not in nums_set:
+                current_num, current_streak = num, 0
+                while current_num in nums_set:
+                    current_streak += 1
+                    current_num = current_num + 1
+                max_length = max(max_length, current_streak)
 
         return max_length
 
-    def longest_consecutive_sequence_sort(self, nums):
-        if not nums or len(nums) == 1:
-            return len(nums)
+
+    def longest_consecutive_sorting(self, nums):
+        n = len(nums)
+        max_length = 0
+        i = 0
 
         nums.sort()
-        prev, curr = 0, 1
-        cs_length, lcs_length = 1, 0
-        while curr < len(nums):
-            if nums[curr] == nums[prev] + 1:
-                cs_length += 1
-            elif nums[curr] != nums[prev]:
-                cs_length = 1
+        while i < n:
+            start, j = i, i + 1
+            while j < n:
+                if nums[i] == nums[j]:
+                    start += 1
+                    i += 1
+                    j += 1
+                elif nums[i] + 1 == nums[j]:
+                    i += 1
+                    j += 1
+                else: 
+                    break
 
-            lcs_length = max(lcs_length, cs_length)
-            prev = curr
-            curr = curr + 1
+            max_length = max(max_length, j - start)
+            i = j
 
-        return lcs_length
+        return max_length
 
 sol = Solution()
-a = [100, 4, 200, 1, 3, 2]
-print('Expect 4: {}'.format(sol.longestConsecutive(a)))
+print(sol.longestConsecutive([100, 4, 200, 1, 3, 2]))

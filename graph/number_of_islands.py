@@ -1,42 +1,55 @@
-'''
-https://leetcode.com/problems/number-of-islands/
-
-Takeaways: 
-1) Flood fill solution
-2) Distinguish between using recursive vs. iterative approach.
-
-Time Complexity of Solution:
-1) O(n) time, O(1) space (destroys input)
-'''
-
-
+from collections import deque
 class Solution:
     def numIslands(self, grid):
         """
         :type grid: List[List[str]]
         :rtype: int
         """
-        island_count = 0
-        if not grid:
-        	return island_count
-        directions = [[0,-1], [0,1],[-1,0],[1,0]]
-        m = len(grid)
-        n = len(grid[0])
-
+        return self.num_islands_dfs(grid)
+    
+    def num_islands_dfs(self, grid):
+        if not grid or len(grid[0]) == 0:
+            return 0
+        m, n = len(grid), len(grid[0])
+        num_islands = 0
         for i in range(m):
             for j in range(n):
                 if grid[i][j] == '1':
-                    explore = [(i, j)]
-                    while len(explore) > 0:
-                        curr_i, curr_j = explore.pop()
-                        grid[curr_i][curr_j] = '0'
-                        for x, y in directions:
-                            next_i, next_j = curr_i + x, curr_j + y
-                            if 0 <= next_i < m and 0 <= next_j < n and grid[next_i][next_j] == '1':
-                                explore.append((next_i, next_j))
-                    island_count += 1
-        return island_count
+                    self.flood_land(grid, i, j, m, n)
+                    num_islands += 1
 
-sol = Solution()
-grid = [['1','1','0','0','0'],['1','1','0','0','0'],['0','0','1','0','0'],['0','0','0','1','0']]
-print('Expect 3: {}'.format(sol.numIslands(grid)))
+        return num_islands
+
+    def flood_land(self, grid, i, j, m, n):
+        grid[i][j] = '0'
+        for x, y in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
+            if 0 <= x < m and 0 <= y < n and grid[x][y] == '1':
+                self.flood_land(grid, x, y, m, n)
+
+    def num_islands_bfs(self, grid):
+        if not grid or len(grid[0]) == 0:
+            return 0
+
+        m, n = len(grid), len(grid[0])
+        num_islands = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == '1':
+                    num_islands += 1
+                    self.flood_island(grid, i, j)
+        
+        return num_islands
+
+    def flood_island(self, grid, i, j):
+        queue = deque([(i, j)])
+        m, n = len(grid), len(grid[0])
+
+        while queue:
+            x, y = queue.popleft()
+            if grid[x][y] == '1':
+                grid[x][y] = '0'
+                for next_x, next_y in [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]:
+                    if 0 <= next_x < m and 0 <= next_y < n and grid[next_x][next_y] == '1':
+                        queue.append((next_x, next_y))
+ 
+
